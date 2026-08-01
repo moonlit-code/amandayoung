@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <title>Research Digest | Amanda Young</title>
+  <meta name="description" content="Curated feed of latest ML research papers and AI technical blogs from arXiv, HuggingFace, DeepMind, Google AI and BAIR.">
+
+  <meta property="og:title" content="Research Digest | Amanda Young">
+  <meta property="og:description" content="Aggregated machine learning research papers and technical AI blog posts.">
+  <meta property="og:type" content="website">
+
+  <style>
+    /* ==============================================
+       GLOBAL BASE STYLES (Copied from index.html for consistency)
+       ============================================== */
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Segoe UI', Roboto, Inter, Helvetica, Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      line-height: 1.7;
+      background-color: #f7f8fa;
+      color: #2a2a2a;
+    }
+
+    /* ==============================================
+       HEADER / TOP BANNER
+       ============================================== */
+    header {
+      background-color: #222c38;
+      color: white;
+      padding: 28px 0;
+      text-align: center;
+    }
+
+    header h1 {
+      margin: 0 0 8px 0;
+      font-weight: 600;
+      font-size: 2rem;
+    }
+
+    header p {
+      margin: 0;
+      opacity: 0.85;
+      font-size: 1.05em;
+    }
+
+    /* ==============================================
+       STICKY NAVIGATION BAR
+       ============================================== */
+    nav {
+      background-color: #fff;
+      border-bottom: 1px solid #e4e7ec;
+      display: flex;
+      justify-content: center;
+      padding: 10px 0;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: #333;
+      padding: 8px 20px;
+      margin: 0 5px;
+      border-radius: 4px;
+      font-weight: 500;
+      transition: background 0.3s ease;
+    }
+
+    nav a:hover {
+      background-color: #eee;
+    }
+
+    nav a.active {
+      background-color: #e8edf2;
+    }
+
+    @media (max-width: 768px) {
+      nav {
+        flex-wrap: wrap;
+      }
+    }
+
+    /* ==============================================
+       MAIN PAGE CONTAINER
+       ============================================== */
+    .container {
+      max-width: 1000px;
+      margin: 24px auto;
+      display: flex;
+      gap: 24px;
+      padding: 0 20px;
+    }
+
+    main {
+      flex: 3;
+      background: white;
+      padding: 28px;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+
+    aside {
+      flex: 1;
+      background: #fff;
+      padding: 24px;
+      border-radius: 10px;
+      height: fit-content;
+      border-left: 1px solid #e4e7ec;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+
+    .sidebar-box {
+      margin-bottom: 24px;
+    }
+
+    .sidebar-box h3 {
+      margin-top: 0;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 6px;
+    }
+
+    .sidebar-box ul {
+      padding-left: 20px;
+      margin: 8px 0;
+    }
+
+    .sidebar-box a {
+      color: #3b5b81;
+      text-decoration: none;
+    }
+
+    .sidebar-box a:hover {
+      text-decoration: underline;
+    }
+
+    /* ==============================================
+       RESEARCH ARTICLE CARD STYLES
+       ============================================== */
+    .article-card {
+      margin-bottom: 32px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid #e4e7ec;
+      transition: transform 0.2s ease;
+    }
+
+    .article-card:hover {
+      transform: translateY(-2px);
+    }
+
+    .article-card h2 {
+      font-size: 1.3rem;
+      margin: 0 0 6px 0;
+    }
+
+    .article-card h2 a {
+      color: #222c38;
+      text-decoration: none;
+    }
+
+    .article-card h2 a:hover {
+      text-decoration: underline;
+    }
+
+    .article-meta {
+      font-size: 0.9rem;
+      color: #666;
+      margin-bottom: 10px;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      margin-left: 8px;
+    }
+
+    .badge-paper {
+      background-color: #e8edf2;
+      color: #2a3b52;
+    }
+
+    .badge-blog {
+      background-color: #e7f3ef;
+      color: #1c5440;
+    }
+
+    .article-summary {
+      color: #3a3a3a;
+    }
+
+    .loading-text {
+      font-style: italic;
+      color: #666;
+    }
+
+    /* ==============================================
+       MOBILE RESPONSIVE OVERRIDES
+       ============================================== */
+    @media (max-width: 768px) {
+      .container {
+        flex-direction: column;
+      }
+      aside {
+        border-left: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Amanda Young</h1>
+  <p>UBC Computer Engineering | Trustworthy AI & Embedded Systems</p>
+</header>
+
+<nav>
+  <a href="index.html">Home</a>
+  <a href="#">Projects</a>
+  <a href="#">AI/ML</a>
+  <a href="#">Embedded</a>
+  <a href="research.html" class="active">Research Digest</a>
+  <a href="#">Contact</a>
+</nav>
+
+<div class="container">
+  <main id="research-feed">
+    <h2>ML Research Digest</h2>
+    <p>Automatically aggregated papers and technical blogs from arXiv, HuggingFace, DeepMind, Google AI, BAIR. Updated via RSS ingestion pipeline.</p>
+    <hr>
+    <p class="loading-text">Loading articles...</p>
+  </main>
+
+  <aside>
+    <div class="sidebar-box">
+      <h3>About This Project</h3>
+      <p>Custom RSS aggregator pipeline that collects AI/ML research feeds and stores articles in Supabase. Built to track new work in machine learning, trustworthy AI and LLM research.</p>
+    </div>
+    <div class="sidebar-box">
+      <h3>Sources</h3>
+      <ul>
+        <li>arXiv cs.LG / cs.AI</li>
+        <li>Google AI Blog</li>
+        <li>HuggingFace Blog</li>
+        <li>DeepMind Blog</li>
+        <li>BAIR Blog</li>
+      </ul>
+    </div>
+    <div class="sidebar-box">
+      <h3>Quick Links</h3>
+      <ul>
+        <li><a href="https://github.com/yourusername" target="_blank">GitHub</a></li>
+        <li><a href="https://linkedin.com/in/yourprofile" target="_blank">LinkedIn</a></li>
+        <li><a href="resume.pdf" target="_blank">Resume</a></li>
+      </ul>
+    </div>
+  </aside>
+</div>
+
+<script>
+  // Initialize Supabase (PUBLIC ANON KEY - same as index.html)
+  const SUPABASE_URL = "https://olghzmtrrrzqeedphynr.supabase.co";
+  const SUPABASE_ANON_KEY = "sb_publishable_ro8CZwo74ekaeUGLcddyFw_1B6dBOVc";
+  const { createClient } = supabase;
+  const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+  // Format date to clean Canadian style: July 30, 2026
+  function formatDate(isoString) {
+    const date = new Date(isoString);
+    return date.toLocaleDateString('en-CA', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+  }
+
+  async function loadResearchArticles() {
+    const feedContainer = document.getElementById("research-feed");
+
+    // Query articles sorted newest first
+    const { data, error } = await supabase
+      .from("research_articles")
+      .select("title, url, summary, source, published_at, article_type")
+      .order("published_at", { ascending: false });
+
+    if (error) {
+      feedContainer.innerHTML = `<p>Failed to load articles: ${error.message}</p>`;
+      return;
+    }
+
+    if (!data || data.length === 0) {
+      feedContainer.innerHTML = `
+        <h2>ML Research Digest</h2>
+        <p>Automatically aggregated papers and technical blogs from arXiv, HuggingFace, DeepMind, Google AI, BAIR. Updated via RSS ingestion pipeline.</p>
+        <hr>
+        <p>No articles found yet. Run your Python RSS ingestion script to populate the database.</p>
+      `;
+      return;
+    }
+
+    let html = `
+      <h2>ML Research Digest</h2>
+      <p>Automatically aggregated papers and technical blogs from arXiv, HuggingFace, DeepMind, Google AI, BAIR. Updated via RSS ingestion pipeline.</p>
+      <hr>
+    `;
+
+    data.forEach(article => {
+      const badgeClass = article.article_type === "Paper" ? "badge-paper" : "badge-blog";
+      html += `
+        <div class="article-card">
+          <h2>
+            <a href="${article.url}" target="_blank">${article.title}</a>
+          </h2>
+          <div class="article-meta">
+            ${article.source} • ${formatDate(article.published_at)}
+            <span class="badge ${badgeClass}">${article.article_type}</span>
+          </div>
+          <div class="article-summary">${article.summary}</div>
+        </div>
+      `;
+    });
+
+    feedContainer.innerHTML = html;
+  }
+
+  // Load articles on page ready
+  loadResearchArticles();
+</script>
+
+</body>
+</html>
