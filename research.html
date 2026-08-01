@@ -270,8 +270,7 @@
   // Initialize Supabase (PUBLIC ANON KEY - same as index.html)
   const SUPABASE_URL = "https://olghzmtrrrzqeedphynr.supabase.co";
   const SUPABASE_ANON_KEY = "sb_publishable_ro8CZwo74ekaeUGLcddyFw_1B6dBOVc";
-  const { createClient } = supabase;
-  const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
   // Format date to clean Canadian style: July 30, 2026
   function formatDate(isoString) {
@@ -287,7 +286,7 @@
     const feedContainer = document.getElementById("research-feed");
 
     // Query articles sorted newest first
-    const { data, error } = await supabase
+    const { data, error } = await _supabase
       .from("research_articles")
       .select("title, url, summary, source, published_at, article_type")
       .order("published_at", { ascending: false });
